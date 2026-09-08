@@ -188,8 +188,15 @@
     max-width:1080px;
     position:relative;
   }
-  .page{display:none;position:relative;}
+  .page{
+    display:none;
+    position:relative;
+    opacity:0;
+    transform:translateY(14px);
+    transition: opacity 0.38s ease, transform 0.38s ease;
+  }
   .page.active{display:block;}
+  .page.active.page-visible{opacity:1;transform:translateY(0);}
 
   .page-top{
     display:flex;
@@ -263,12 +270,13 @@
     gap:18px;
   }
   .card{
-    border:1px solid var(--line);
-    border-radius:6px;
+    border:1.5px solid rgba(46,29,16,0.22);
+    border-radius:14px;
     background:var(--cream);
     padding:24px;
     display:flex;
     flex-direction:column;
+    box-shadow: 0 2px 10px -4px rgba(46,29,16,0.12);
     transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
   }
   .card:hover{
@@ -280,7 +288,7 @@
   .card-wide{grid-column: span 2;}
   .card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
   .card-icon{
-    width:30px;height:30px;border-radius:6px;
+    width:30px;height:30px;border-radius:8px;
     background:var(--brown-clay);color:var(--cream);
     display:flex;align-items:center;justify-content:center;font-size:14px;flex:none;
   }
@@ -410,6 +418,22 @@
   }
   .contact-list a:hover{border-color:var(--brown-clay);transform:translateX(4px);}
   .contact-list .label{color:var(--sienna);font-size:12.5px;}
+
+  /* ---- scroll reveal ---- */
+  .reveal{
+    opacity:0;
+    transform:translateY(22px);
+    transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.revealed{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .page{ transition:none; opacity:1 !important; transform:none !important; }
+    .reveal{ transition:none; opacity:1 !important; transform:none !important; }
+  }
 
   @media (max-width: 900px){
     .shell{grid-template-columns:1fr;}
@@ -668,11 +692,30 @@
   const clickableCards = document.querySelectorAll('.card[data-page]');
   const pages = document.querySelectorAll('.page');
 
-  function goTo(id){
-    pages.forEach(p => p.classList.toggle('active', p.id === 'page-' + id));
+  const TRANSITION_MS = 260; // keep in sync with .page transition duration (~0.38s minus overlap)
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function showPage(id){
+    const next = document.getElementById('page-' + id);
+    if(!next) return;
+    pages.forEach(p => { if(p !== next) p.classList.remove('active','page-visible'); });
+    next.classList.add('active');
     navButtons.forEach(b => b.classList.toggle('active', b.dataset.page === id));
+    // double rAF so the browser registers display:block before animating opacity
+    requestAnimationFrame(() => requestAnimationFrame(() => next.classList.add('page-visible')));
     window.scrollTo({top:0});
     history.replaceState(null, '', '#' + id);
+    revealWithinPage(next);
+  }
+
+  function goTo(id){
+    const current = document.querySelector('.page.active');
+    if(!current || current.id === 'page-' + id || reduceMotion){
+      showPage(id);
+      return;
+    }
+    current.classList.remove('page-visible');
+    setTimeout(() => showPage(id), TRANSITION_MS);
   }
 
   navButtons.forEach(b => b.addEventListener('click', () => goTo(b.dataset.page)));
@@ -687,8 +730,54 @@
     });
   });
 
+  /* ---- scroll-reveal for cards, credentials, ledger rows, timeline items, contact links ---- */
+  const revealObserver = 'IntersectionObserver' in window
+    ? new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('revealed');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' })
+    : null;
+
+  function setupReveal(){
+    const groups = document.querySelectorAll('.grid, .ledger, .about-side, .timeline, .contact-list');
+    groups.forEach(group => {
+      Array.from(group.children).forEach((el, i) => {
+        el.classList.add('reveal');
+        el.style.transitionDelay = reduceMotion ? '0ms' : (i * 65) + 'ms';
+      });
+    });
+    document.querySelectorAll('.empty-state, .about-portrait, .about-intro, .contact-card').forEach(el => {
+      el.classList.add('reveal');
+    });
+    document.querySelectorAll('.reveal').forEach(el => {
+      if(revealObserver) revealObserver.observe(el);
+      else el.classList.add('revealed');
+    });
+  }
+
+  function revealWithinPage(page){
+    // elements were display:none while hidden, so make sure the observer re-checks them now
+    page.querySelectorAll('.reveal:not(.revealed)').forEach(el => {
+      if(revealObserver){ revealObserver.unobserve(el); revealObserver.observe(el); }
+      else el.classList.add('revealed');
+    });
+  }
+
+  setupReveal();
+  revealWithinPage(document.querySelector('.page.active'));
+
   const initial = location.hash.replace('#','');
-  if (initial && document.getElementById('page-' + initial)) goTo(initial);
+  if (initial && document.getElementById('page-' + initial)) {
+    showPage(initial);
+  } else {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.querySelector('.page.active').classList.add('page-visible');
+    }));
+  }
 </script>
 </body>
 </html>
