@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Albemar B. Sandoy — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  :root{
+    --ink:#2E1D10;
+    --muted:#5a4632;
+    --brown-deep:#8B4513;
+    --brown-clay:#D2691E;
+    --wheat:#F5DEB3;
+    --cream:#FFF8DC;
+    --sienna:#A0522D;
+    --paper:#FEFDFB;
+    --line: rgba(46,29,16,0.14);
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Poppins', sans-serif;
+    font-size:16.5px;
+    line-height:1.6;
+  }
+  h1,h2,h3{
+    font-family:'Poppins', sans-serif;
+    margin:0;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+  button{font-family:inherit;cursor:pointer;}
+
+  /* ---- layout shell ---- */
+  .shell{
+    display:grid;
+    grid-template-columns: 268px 1fr;
+    min-height:100vh;
+  }
+
+  /* ---- sidebar ---- */
+  .sidebar{
+    background:rgba(255,248,220,0.88);
+    border-right:1px solid var(--line);
+    padding:36px 26px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  .ring{
+    width:14px;height:14px;
+    border:1.5px solid var(--line);
+    border-radius:50%;
+    margin-bottom:16px;
+  }
+  .avatar{
+    width:72px;height:72px;
+    border-radius:50%;
+    background:var(--brown-deep);
+    color:var(--cream);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Poppins',sans-serif;
+    font-size:20px;
+    font-weight:500;
+    margin-bottom:16px;
+    overflow:hidden;
+    border:2px solid var(--paper);
+    box-shadow:0 0 0 1px var(--line);
+  }
+  .avatar img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .name{font-size:20.5px;line-height:1.3;margin-bottom:4px;}
+  .role{
+    font-size:13.5px;
+    color:var(--sienna);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+  .role-rule{width:100%;height:1px;background:var(--line);margin:16px 0 22px 0;}
+
+  .social{display:flex;gap:8px;margin-bottom:30px;}
+  .social a{
+    width:32px;height:32px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    display:flex;align-items:center;justify-content:center;
+    background:var(--paper);
+    font-size:15px;
+  }
+  .social a:hover{background:var(--wheat);border-color:var(--brown-clay);}
+
+  nav.primary ul{display:flex;flex-direction:column;gap:2px;}
+  nav.primary button{
+    all:unset;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:10px 12px;
+    border-radius:var(--radius);
+    font-size:15.5px;
+    color:var(--ink);
+    border-left:2px solid transparent;
+    width:100%;
+  }
+  nav.primary .ico{
+    width:16px;height:16px;flex:none;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--sienna);
+    font-size:16px;
+  }
+  nav.primary button:hover{background:var(--wheat);}
+  nav.primary button.active{
+    background:var(--wheat);
+    border-left:2px solid var(--brown-clay);
+    font-weight:500;
+  }
+  nav.primary button.active .ico{color:var(--brown-deep);}
+
+  .sidebar-footer{
+    margin-top:auto;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:12px;
+    color:var(--sienna);
+  }
+  .a11y-dot{
+    width:26px;height:26px;border-radius:50%;
+    background:var(--ink);color:var(--cream);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;flex:none;
+  }
+
+  /* ---- global background: sparse arcs & circles, whole page, behind everything ---- */
+  html::before, html::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    pointer-events:none;
+    background-repeat:no-repeat;
+  }
+  html::before{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%271600%27 height=%27900%27%3E%3Ccircle cx=%2760%27 cy=%2740%27 r=%2728%27 stroke=%27%23A0522D%27 stroke-opacity=%270.22%27 stroke-width=%271.5%27 fill=%27none%27/%3E%3Ccircle cx=%27420%27 cy=%27660%27 r=%27190%27 stroke=%27%23A0522D%27 stroke-opacity=%270.12%27 stroke-width=%271.5%27 fill=%27none%27/%3E%3Ccircle cx=%271220%27 cy=%27130%27 r=%27260%27 stroke=%27%23A0522D%27 stroke-opacity=%270.12%27 stroke-width=%271.5%27 fill=%27none%27/%3E%3Ccircle cx=%271520%27 cy=%27520%27 r=%27140%27 stroke=%27%23A0522D%27 stroke-opacity=%270.15%27 stroke-width=%271.5%27 fill=%27none%27/%3E%3Ccircle cx=%27860%27 cy=%27800%27 r=%2790%27 stroke=%27%23A0522D%27 stroke-opacity=%270.16%27 stroke-width=%271.5%27 fill=%27none%27/%3E%3C/svg%3E");
+    background-size: 130% auto;
+    background-position: 0% 0%;
+    animation: drift-a 70s ease-in-out infinite;
+  }
+  html::after{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%271600%27 height=%27900%27%3E%3Ccircle cx=%27150%27 cy=%27820%27 r=%27340%27 stroke=%27%238B4513%27 stroke-opacity=%270.08%27 stroke-width=%271.5%27 fill=%27none%27/%3E%3Ccircle cx=%271000%27 cy=%2760%27 r=%2745%27 stroke=%27%238B4513%27 stroke-opacity=%270.18%27 stroke-width=%271.5%27 fill=%27none%27/%3E%3Ccircle cx=%271400%27 cy=%27760%27 r=%27210%27 stroke=%27%238B4513%27 stroke-opacity=%270.1%27 stroke-width=%271.5%27 fill=%27none%27/%3E%3Ccircle cx=%27650%27 cy=%27300%27 r=%2770%27 stroke=%27%238B4513%27 stroke-opacity=%270.14%27 stroke-width=%271.5%27 fill=%27none%27/%3E%3C/svg%3E");
+    background-size: 140% auto;
+    background-position: 100% 100%;
+    animation: drift-b 90s ease-in-out infinite;
+  }
+  @keyframes drift-a{
+    0%{ background-position: 0% 0%; }
+    50%{ background-position: 4% 3%; }
+    100%{ background-position: 0% 0%; }
+  }
+  @keyframes drift-b{
+    0%{ background-position: 100% 100%; }
+    50%{ background-position: 95% 96%; }
+    100%{ background-position: 100% 100%; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html::before, html::after{ animation:none; }
+  }
+
+  /* ---- main ---- */
+  main{
+    padding:52px 60px;
+    max-width:1080px;
+    position:relative;
+  }
+  .page{display:none;position:relative;}
+  .page.active{display:block;}
+
+  .page-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .headline{
+    font-size:clamp(32px, 3.8vw, 49px);
+    line-height:1.15;
+    max-width:17ch;
+    font-weight:600;
+  }
+  .sub{margin-top:20px;font-size:17.5px;max-width:56ch;color:var(--muted);}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:12px 22px;border-radius:var(--radius);
+    font-size:15px;font-weight:500;white-space:nowrap;
+  }
+  .btn-solid{background:var(--brown-deep);color:var(--cream);}
+  .btn-solid:hover{background:var(--sienna);}
+  .btn-outline{border:1px solid var(--line);}
+  .btn-outline:hover{border-color:var(--brown-clay);}
+
+  .toolbar{
+    margin-top:44px;
+    border:1px solid var(--line);
+    border-left:3px solid var(--brown-deep);
+    border-radius:var(--radius);
+    padding:18px 0 18px 22px;
+    display:flex;align-items:center;gap:26px;
+    background:var(--cream);
+    overflow:hidden;
+  }
+  .toolbar-label{font-size:11.5px;color:var(--sienna);text-transform:uppercase;letter-spacing:0.05em;}
+  .toolbar-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:16px;white-space:nowrap;}
+  .toolbar-info{flex:none;}
+
+  .marquee{
+    flex:1;
+    min-width:0;
+    overflow:hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+  }
+  .marquee-track{
+    display:flex;
+    gap:28px;
+    width:max-content;
+    animation: marquee-scroll 16s linear infinite;
+  }
+  .tool-item{
+    display:flex;align-items:center;gap:8px;
+    font-size:14.5px;color:var(--muted);white-space:nowrap;
+  }
+  .tool-item i{color:var(--brown-clay);font-size:16px;}
+  @keyframes marquee-scroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .marquee-track{animation:none;}
+  }
+
+  /* dashboard card grid */
+  .grid{
+    margin-top:36px;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:18px;
+  }
+  .card{
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:var(--cream);
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+  .card:hover{
+    transform: translateY(-6px) scale(1.015);
+    box-shadow: 0 16px 30px -12px rgba(46,29,16,0.28);
+    border-color: var(--brown-clay);
+  }
+  .card[data-page]{cursor:pointer;}
+  .card-wide{grid-column: span 2;}
+  .card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .card-icon{
+    width:30px;height:30px;border-radius:6px;
+    background:var(--brown-clay);color:var(--cream);
+    display:flex;align-items:center;justify-content:center;font-size:14px;flex:none;
+  }
+  .card h3{font-size:15.5px;}
+  .card p{margin:0;font-size:14.5px;color:var(--muted);}
+  .card-link{
+    margin-top:16px;font-size:13.5px;color:var(--sienna);font-weight:500;
+    display:inline-flex;align-items:center;gap:6px;
+    transition: gap 0.2s ease;
+  }
+  .card[data-page]:hover .card-link{gap:10px;}
+  .card-banner{
+    margin-top:14px;
+    border-radius:4px;
+    background:var(--wheat);
+    border:1px solid var(--line);
+    padding:18px;
+    font-family:'Poppins',sans-serif;
+    font-weight:500;
+    font-size:16px;
+    color:var(--brown-deep);
+  }
+  .card-list{margin-top:6px;}
+  .card-list li{
+    display:flex;justify-content:space-between;
+    padding:7px 0;
+    font-size:14px;
+    border-bottom:1px solid var(--line);
+    color:var(--muted);
+  }
+  .card-list li span:last-child{color:var(--sienna);}
+  .card-badge{
+    margin-top:8px;
+    display:inline-flex;align-self:flex-start;
+    padding:5px 10px;
+    background:var(--ink);color:var(--cream);
+    border-radius:4px;font-size:12px;font-weight:500;
+  }
+
+  /* section pages */
+  .section-head{margin-bottom:30px;}
+  .section-head h2{font-size:28px;}
+  .section-head p{margin-top:8px;color:var(--muted);font-size:16px;max-width:52ch;}
+
+  .ledger{border-top:1px solid var(--line);}
+  .ledger-row{
+    display:grid;grid-template-columns:40px 1fr auto;gap:18px;
+    align-items:start;padding:20px 0;border-bottom:1px solid var(--line);
+  }
+  .ledger-index{font-size:13.5px;color:var(--sienna);font-weight:500;padding-top:3px;}
+  .ledger-title{font-size:17px;font-weight:500;margin-bottom:4px;}
+  .ledger-desc{font-size:15px;color:var(--muted);max-width:52ch;}
+  .ledger-tag{font-size:12.5px;color:var(--sienna);white-space:nowrap;padding-top:3px;}
+
+  .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;}
+  .about-copy p{margin:0 0 15px 0;color:var(--muted);font-size:16px;}
+  .about-portrait{
+    display:flex;justify-content:center;margin-bottom:26px;position:relative;
+  }
+  .about-portrait::before{
+    content:"";
+    position:absolute;
+    top:8%;left:50%;
+    transform:translateX(-50%);
+    width:78%;height:88%;
+    background:var(--wheat);
+    border:1px solid var(--line);
+    border-radius:12px;
+    z-index:0;
+  }
+  .about-portrait img{
+    position:relative;z-index:1;
+    max-width:78%;
+    height:auto;
+    filter: drop-shadow(0 18px 26px rgba(46,29,16,0.25));
+  }
+  .credential-card{
+    border:1px solid var(--line);border-left:3px solid var(--brown-clay);
+    border-radius:var(--radius);padding:16px 18px;background:var(--cream);margin-bottom:11px;
+  }
+  .credential-card h3{font-size:15px;margin-bottom:4px;}
+  .credential-card span{font-size:12.5px;color:var(--sienna);}
+
+  .timeline-item{padding:16px 0;border-top:1px solid var(--line);}
+  .timeline-item:last-child{border-bottom:1px solid var(--line);}
+  .timeline-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--sienna);margin-bottom:6px;gap:12px;}
+  .timeline-item h3{font-size:16px;margin-bottom:5px;}
+  .timeline-item p{margin:0;font-size:14.5px;color:var(--muted);}
+
+  .empty-state{
+    border:1px dashed var(--line);border-radius:var(--radius);
+    padding:36px 30px;background:var(--cream);
+  }
+  .empty-state h3{font-size:17px;margin-bottom:7px;}
+  .empty-state p{color:var(--muted);font-size:15px;max-width:48ch;}
+
+  .contact-card{border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--cream);max-width:520px;}
+  .contact-list{margin-top:18px;display:flex;flex-direction:column;gap:9px;}
+  .contact-list a{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:13px 16px;border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--paper);font-size:15px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .contact-list a:hover{border-color:var(--brown-clay);transform:translateX(4px);}
+  .contact-list .label{color:var(--sienna);font-size:12.5px;}
+
+  @media (max-width: 900px){
+    .shell{grid-template-columns:1fr;}
+    .sidebar{position:relative;height:auto;padding:22px 22px;}
+    main{padding:36px 22px;}
+    .grid{grid-template-columns:1fr;}
+    .card-wide{grid-column:span 1;}
+    .about-grid{grid-template-columns:1fr;}
+    nav.primary ul{flex-direction:row;flex-wrap:wrap;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="ring"></div>
+    <div class="avatar"><img src="images/avatar.jpg" alt="Albemar B. Sandoy"></div>
+    <div class="name">Albemar B. Sandoy</div>
+    <div class="role">Accounting · Business Operations & Client Support</div>
+    <div class="role-rule"></div>
+
+    <div class="social">
+      <a href="https://www.linkedin.com/in/albemar-sandoy-294a2831b" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="ph ph-linkedin-logo"></i></a>
+      <a href="https://www.facebook.com/share/1AcSfZgxes/" target="_blank" rel="noopener" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a>
+      <a href="mailto:sandoyalbemar19@gmail.com" aria-label="Email"><i class="ph ph-envelope-simple"></i></a>
+    </div>
+
+    <nav class="primary">
+      <ul>
+        <li><button class="active" data-page="home"><span class="ico"><i class="ph ph-house"></i></span>Home</button></li>
+        <li><button data-page="projects"><span class="ico"><i class="ph ph-folder"></i></span>Projects</button></li>
+        <li><button data-page="services"><span class="ico"><i class="ph ph-briefcase"></i></span>Services</button></li>
+        <li><button data-page="about"><span class="ico"><i class="ph ph-user"></i></span>About Me</button></li>
+        <li><button data-page="contact"><span class="ico"><i class="ph ph-envelope-simple"></i></span>Contact</button></li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="a11y-dot"><i class="ph ph-wheelchair"></i></div>
+      <div>© 2026 Albemar Sandoy.<br>All rights reserved.</div>
+    </div>
+  </aside>
+
+  <main>
+
+    <!-- HOME -->
+    <section class="page active" id="page-home">
+      <div class="page-top">
+        <div>
+          <h1 class="headline">Reliable support, organized work, and a commitment to helping businesses grow.</h1>
+          <p class="sub">BS Accountancy graduate and Civil Service Professional eligible, currently reviewing for the CPA Licensure Examination — with a year of remote experience supporting US-based businesses.</p>
+        </div>
+        <a href="mailto:sandoyalbemar19@gmail.com" class="btn btn-solid">Get in touch <i class="ph ph-arrow-up-right"></i></a>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-info">
+          <div class="toolbar-label">Daily drivers</div>
+          <div class="toolbar-title">Tools I work with</div>
+        </div>
+        <div class="marquee">
+          <div class="marquee-track">
+            <span class="tool-item"><i class="ph ph-chart-line-up"></i>GoHighLevel CRM</span>
+            <span class="tool-item"><i class="ph ph-file-xls"></i>Microsoft Excel</span>
+            <span class="tool-item"><i class="ph ph-slack-logo"></i>Slack</span>
+            <span class="tool-item"><i class="ph ph-chat-circle-text"></i>TextGrid</span>
+            <span class="tool-item"><i class="ph ph-google-logo"></i>Google Workspace</span>
+            <span class="tool-item"><i class="ph ph-chart-line-up"></i>GoHighLevel CRM</span>
+            <span class="tool-item"><i class="ph ph-file-xls"></i>Microsoft Excel</span>
+            <span class="tool-item"><i class="ph ph-slack-logo"></i>Slack</span>
+            <span class="tool-item"><i class="ph ph-chat-circle-text"></i>TextGrid</span>
+            <span class="tool-item"><i class="ph ph-google-logo"></i>Google Workspace</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card card-wide" data-page="projects" tabindex="0" role="button" aria-label="View projects">
+          <div class="card-head"><div class="card-icon"><i class="ph ph-folder"></i></div><h3>PROJECTS</h3></div>
+          <p>Case studies and work samples from my accounting coursework and VA experience.</p>
+          <div class="card-banner">Coming soon — currently being put together.</div>
+          <span class="card-link">View projects <i class="ph ph-arrow-right"></i></span>
+        </div>
+        <div class="card" data-page="about" tabindex="0" role="button" aria-label="Read more about me">
+          <div class="card-head"><div class="card-icon"><i class="ph ph-user"></i></div><h3>ABOUT</h3></div>
+          <p>Who I am and how I work.</p>
+          <span class="card-link">Read more <i class="ph ph-arrow-right"></i></span>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-icon"><i class="ph ph-medal"></i></div><h3>CREDENTIALS</h3></div>
+          <p>BS Accountancy grad, CPALE candidate, Civil Service Professional eligible.</p>
+          <span class="card-badge">CPALE Candidate</span>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-icon"><i class="ph ph-briefcase"></i></div><h3>SERVICES</h3></div>
+          <p>What I build for businesses and clients.</p>
+          <ul class="card-list">
+            <li><span>Bookkeeping & Documentation</span><span>01</span></li>
+            <li><span>CRM & Ops Support</span><span>02</span></li>
+            <li><span>Client Communication</span><span>03</span></li>
+          </ul>
+        </div>
+        <div class="card" data-page="contact" tabindex="0" role="button" aria-label="Go to contact">
+          <div class="card-head"><div class="card-icon"><i class="ph ph-envelope-simple"></i></div><h3>CONTACT</h3></div>
+          <p>Open to remote accounting and business-support work.</p>
+          <span class="card-link">Reach out <i class="ph ph-arrow-right"></i></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="page" id="page-projects">
+      <div class="section-head">
+        <h2>Projects</h2>
+        <p>Work samples from my accounting coursework and virtual assistant experience.</p>
+      </div>
+      <div class="empty-state">
+        <h3>Coming soon</h3>
+        <p>This section is still being put together — case studies and work samples will be added here shortly. In the meantime, feel free to reach out directly for references or samples of past work.</p>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="page" id="page-services">
+      <div class="section-head">
+        <h2>Services</h2>
+        <p>What I can take off your plate — on the accounting side and the operations side.</p>
+      </div>
+      <div class="ledger">
+        <div class="ledger-row">
+          <div class="ledger-index">01</div>
+          <div>
+            <div class="ledger-title">Bookkeeping & Financial Documentation</div>
+            <div class="ledger-desc">Organizing financial records, preparing spreadsheets and reports, and keeping documentation audit-ready.</div>
+          </div>
+          <div class="ledger-tag">Accounting</div>
+        </div>
+        <div class="ledger-row">
+          <div class="ledger-index">02</div>
+          <div>
+            <div class="ledger-title">CRM & Business Operations Support</div>
+            <div class="ledger-desc">Managing client databases and workflows in GoHighLevel, plus internal coordination across Slack and TextGrid.</div>
+          </div>
+          <div class="ledger-tag">Operations</div>
+        </div>
+        <div class="ledger-row">
+          <div class="ledger-index">03</div>
+          <div>
+            <div class="ledger-title">Client Communication & Scheduling</div>
+            <div class="ledger-desc">Calendar bookings, appointment scheduling, and day-to-day communication across email, SMS, and chat.</div>
+          </div>
+          <div class="ledger-tag">Support</div>
+        </div>
+        <div class="ledger-row">
+          <div class="ledger-index">04</div>
+          <div>
+            <div class="ledger-title">Records Management</div>
+            <div class="ledger-desc">Digitizing and organizing institutional documentation for accuracy and easy retrieval.</div>
+          </div>
+          <div class="ledger-tag">Admin</div>
+        </div>
+        <div class="ledger-row">
+          <div class="ledger-index">05</div>
+          <div>
+            <div class="ledger-title">Lead Generation & Outreach</div>
+            <div class="ledger-desc">Prospect research, B2B outreach, and SMS/email marketing campaigns to support sales pipelines.</div>
+          </div>
+          <div class="ledger-tag">Marketing</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="page" id="page-about">
+      <div class="section-head">
+        <h2>About Me</h2>
+        <p>Who I am and how I work.</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-copy">
+          <div class="about-portrait">
+            <img src="images/about.webp" alt="Albemar B. Sandoy">
+          </div>
+          <p>I graduated with a BS in Accountancy from Western Mindanao State University in 2026, and I'm currently reviewing for the CPA Licensure Examination. I'm also a Civil Service Professional eligible, having passed the paper-and-pencil exam.</p>
+          <p>Before and during my review, I worked as a virtual assistant supporting several US-based companies — handling CRM systems, client communication, marketing campaigns, and day-to-day operations. I've also taught accounting as a Teaching Assistant Intern, designing lessons and handling grading for around 150 students across three sections.</p>
+          <p>I like work that rewards attention to detail — whether that's reconciling numbers or keeping a client's pipeline organized. I'm adaptable, deadline-driven, and comfortable picking up new tools quickly.</p>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-meta"><span>US Virtual Assistant — Business Operations & Client Support</span><span>May 2025 – Jun 2026</span></div>
+              <p>Remote work for BHMedia Company, ADVERTRA Co., LeadBolt Homes Co., and Taxlow PPL — CRM management, website builds, workflow automation, and marketing campaigns.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-meta"><span>Teaching Assistant Intern</span><span>Aug 2024 – Dec 2024</span></div>
+              <p>Western Mindanao State University — designed lesson plans, delivered lectures, and independently graded exams for first- and second-year accounting classes.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-meta"><span>Records Management Assistant</span><span>May 2024</span></div>
+              <p>AIMCoop, Kabasalan Branch — digitized paper records and maintained an organized filing system.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-side">
+          <div class="credential-card">
+            <h3>BS in Accountancy</h3>
+            <span>Western Mindanao State University · 2021 – 2026</span>
+          </div>
+          <div class="credential-card">
+            <h3>CPA Licensure Examination</h3>
+            <span>Candidate — currently under review</span>
+          </div>
+          <div class="credential-card">
+            <h3>Civil Service Professional Eligible</h3>
+            <span>Paper-and-Pencil Test — Passed</span>
+          </div>
+          <div class="credential-card">
+            <h3>EPIC Program</h3>
+            <span>English Proficiency for International Competitiveness — WMSU</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="page" id="page-contact">
+      <div class="section-head">
+        <h2>Contact</h2>
+        <p>Have work that needs an organized pair of hands? Let's talk.</p>
+      </div>
+      <div class="contact-card">
+        <h3 style="font-size:17px;">Based in Kabasalan, Zamboanga Sibugay — open to remote work.</h3>
+        <div class="contact-list">
+          <a href="mailto:sandoyalbemar19@gmail.com"><span>sandoyalbemar19@gmail.com</span><span class="label">Email</span></a>
+          <a href="https://www.linkedin.com/in/albemar-sandoy-294a2831b" target="_blank" rel="noopener"><span>albemar-sandoy</span><span class="label">LinkedIn</span></a>
+          <a href="https://www.facebook.com/share/1AcSfZgxes/" target="_blank" rel="noopener"><span>Albemar Sandoy</span><span class="label">Facebook</span></a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const navButtons = document.querySelectorAll('nav.primary button[data-page]');
+  const clickableCards = document.querySelectorAll('.card[data-page]');
+  const pages = document.querySelectorAll('.page');
+
+  function goTo(id){
+    pages.forEach(p => p.classList.toggle('active', p.id === 'page-' + id));
+    navButtons.forEach(b => b.classList.toggle('active', b.dataset.page === id));
+    window.scrollTo({top:0});
+    history.replaceState(null, '', '#' + id);
+  }
+
+  navButtons.forEach(b => b.addEventListener('click', () => goTo(b.dataset.page)));
+
+  clickableCards.forEach(card => {
+    card.addEventListener('click', () => goTo(card.dataset.page));
+    card.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        goTo(card.dataset.page);
+      }
+    });
+  });
+
+  const initial = location.hash.replace('#','');
+  if (initial && document.getElementById('page-' + initial)) goTo(initial);
+</script>
+</body>
+</html>
