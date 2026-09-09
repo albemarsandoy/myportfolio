@@ -4,30 +4,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Albemar B. Sandoy — Portfolio</title>
+<script>
+  (function(){
+    try{
+      var saved = localStorage.getItem('theme');
+      var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    }catch(e){}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 <style>
   :root{
-    --ink:#1B2340;
-    --muted:#5B6172;
-    --navy:#222D52;
-    --navy-deep:#161C38;
-    --azure:#3E4E8A;
-    --azure-soft:#6478B0;
-    --champagne:#C9A876;
-    --silk:#ECE7E0;
-    --marble:#E6E6E3;
+    --ink:#161E3D;
+    --muted:#59627E;
+    --navy:#22305C;
+    --navy-deep:#131A38;
+    --azure:#3E5FCB;
+    --azure-soft:#6E8EE8;
+    --champagne:#5B8DEF;
+    --silk:#E8EDFA;
+    --marble:#E2E7F4;
     --pearl:#FDFFFF;
-    --azure-text:#3E4A7D;
-    --paper:#FBFAF8;
+    --surface:#FFFFFF;
+    --azure-text:#33509E;
+    --paper:#F6F8FD;
     --line: rgba(34,45,82,0.14);
+    --shadow-rgb: 34,45,82;
+    --sidebar-rgb: 226,231,244;
     --radius: 3px;
     --edge: 60px;
   }
   @media (max-width:900px){ :root{ --edge:22px; } }
   @media (max-width:600px){ :root{ --edge:16px; } }
+
+  /* ---- dark theme: same tokens, blue-leaning dark values ---- */
+  html[data-theme="dark"]{
+    --ink:#E8ECFB;
+    --muted:#98A3C7;
+    --navy:#2A3B72;
+    --navy-deep:#131B33;
+    --azure:#6E93FA;
+    --azure-soft:#94B2FF;
+    --champagne:#7FB4FF;
+    --silk:#1B2748;
+    --marble:#182140;
+    --surface:#121A33;
+    --azure-text:#9DB8FF;
+    --paper:#0A0F20;
+    --line: rgba(150,170,230,0.16);
+    --shadow-rgb: 0,0,0;
+    --sidebar-rgb: 20,28,54;
+  }
+  html[data-theme="dark"] .form-status.is-success{color:#5FE0A0;}
+  html[data-theme="dark"] .form-status.is-error{color:#FF9A76;}
+
   *{box-sizing:border-box;}
+  *,*::before,*::after{
+    transition: background-color 0.35s ease, border-color 0.3s ease, color 0.3s ease;
+  }
   html{
     -webkit-text-size-adjust:100%;
     text-size-adjust:100%;
@@ -63,7 +100,7 @@
 
   /* ---- sidebar ---- */
   .sidebar{
-    background:rgba(236,231,224,0.75);
+    background:rgba(var(--sidebar-rgb),0.75);
     border-right:1px solid var(--line);
     padding:36px 26px;
     position:sticky;
@@ -113,10 +150,22 @@
     border:1px solid var(--line);
     border-radius:var(--radius);
     display:flex;align-items:center;justify-content:center;
-    background:var(--paper);
+    background:var(--surface);
     font-size:15px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
   }
   .social a:hover{background:var(--silk);border-color:var(--azure);}
+  .theme-toggle{
+    width:32px;height:32px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    display:flex;align-items:center;justify-content:center;
+    background:var(--surface);
+    color:var(--ink);
+    font-size:15px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+  .theme-toggle:hover{background:var(--silk);border-color:var(--azure);}
 
   nav.primary ul{display:flex;flex-direction:column;gap:4px;}
   nav.primary button{
@@ -139,8 +188,8 @@
     font-size:16px;
     border:1px solid var(--line);
     border-radius:8px;
-    background:var(--pearl);
-    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    background:var(--surface);
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
   }
   nav.primary button span:last-child{letter-spacing:0.01em;}
   nav.primary button:hover{color:var(--ink);}
@@ -170,7 +219,7 @@
   }
   .a11y-dot{
     width:26px;height:26px;border-radius:50%;
-    background:var(--ink);color:var(--pearl);
+    background:var(--navy);color:var(--pearl);
     display:flex;align-items:center;justify-content:center;
     font-size:12px;flex:none;
   }
@@ -208,12 +257,15 @@
   }
   @media (prefers-reduced-motion: reduce){
     html::before, html::after{ animation:none; }
+    *,*::before,*::after{ transition:none !important; }
   }
 
   /* ---- main ---- */
   main{
     padding:52px 60px;
     max-width:1080px;
+    min-width:0;
+    width:100%;
     position:relative;
   }
   .page{
@@ -233,7 +285,7 @@
     gap:32px;
     flex-wrap:wrap;
   }
-  .hero-copy{flex:1 1 480px;max-width:700px;}
+  .hero-copy{flex:1 1 480px;max-width:700px;min-width:0;}
   .headline{
     font-size:clamp(32px, 3.8vw, 49px);
     line-height:1.15;
@@ -318,22 +370,23 @@
   .grid{
     margin-top:36px;
     display:grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0,1fr));
     gap:18px;
   }
   .card{
-    border:1.5px solid rgba(46,29,16,0.22);
+    border:1.5px solid rgba(var(--shadow-rgb),0.22);
     border-radius:14px;
-    background:var(--pearl);
+    background:var(--surface);
     padding:24px;
     display:flex;
     flex-direction:column;
-    box-shadow: 0 2px 10px -4px rgba(46,29,16,0.12);
-    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    min-width:0;
+    box-shadow: 0 2px 10px -4px rgba(var(--shadow-rgb),0.12);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background-color 0.35s ease;
   }
   .card:hover{
     transform: translateY(-6px) scale(1.015);
-    box-shadow: 0 16px 30px -12px rgba(46,29,16,0.28);
+    box-shadow: 0 16px 30px -12px rgba(var(--shadow-rgb),0.28);
     border-color: var(--azure);
   }
   .card[data-page]{cursor:pointer;}
@@ -345,7 +398,7 @@
     display:flex;align-items:center;justify-content:center;font-size:14px;flex:none;
   }
   .card h3{font-size:15.5px;}
-  .card p{margin:0;font-size:14.5px;color:var(--muted);}
+  .card p{margin:0;font-size:14.5px;color:var(--muted);overflow-wrap:anywhere;}
   .card-link{
     margin-top:16px;font-size:13.5px;color:var(--azure-text);font-weight:500;
     display:inline-flex;align-items:center;gap:6px;
@@ -366,17 +419,19 @@
   .card-list{margin-top:6px;}
   .card-list li{
     display:flex;justify-content:space-between;
+    gap:10px;
     padding:7px 0;
     font-size:14px;
     border-bottom:1px solid var(--line);
     color:var(--muted);
   }
-  .card-list li span:last-child{color:var(--azure-text);}
+  .card-list li span:first-child{min-width:0;overflow-wrap:anywhere;}
+  .card-list li span:last-child{color:var(--azure-text);flex:none;}
   .card-badge{
     margin-top:8px;
     display:inline-flex;align-self:flex-start;
     padding:5px 10px;
-    background:var(--ink);color:var(--pearl);
+    background:var(--navy);color:var(--pearl);
     border-radius:4px;font-size:12px;font-weight:500;
   }
 
@@ -392,21 +447,56 @@
   }
   .ledger-index{font-size:13.5px;color:var(--azure-text);font-weight:500;padding-top:3px;}
   .ledger-title{font-size:17px;font-weight:500;margin-bottom:4px;}
-  .ledger-desc{font-size:15px;color:var(--muted);max-width:52ch;}
+  .ledger-desc{font-size:15px;color:var(--muted);max-width:52ch;overflow-wrap:anywhere;}
   .ledger-tag{font-size:12.5px;color:var(--azure-text);white-space:nowrap;padding-top:3px;}
 
-  .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;}
-  .about-copy p{margin:0 0 15px 0;color:var(--muted);font-size:16px;}
+  /* ---- services: hover/click to expand detail ---- */
+  .service-row{cursor:pointer;}
+  .service-row .ledger-title{display:flex;align-items:center;gap:8px;}
+  .service-row .expand-icon{
+    font-size:13px;color:var(--azure-text);flex:none;
+    transition:transform 0.25s ease;
+  }
+  .service-detail{
+    list-style:none;margin:0;padding:0;
+    max-height:0;opacity:0;overflow:hidden;
+    transition:max-height 0.35s ease, opacity 0.3s ease, margin-top 0.35s ease;
+  }
+  .service-detail li{
+    position:relative;padding:5px 0 5px 17px;
+    font-size:14px;color:var(--muted);
+    overflow-wrap:anywhere;
+  }
+  .service-detail li::before{
+    content:"";position:absolute;left:0;top:12px;
+    width:5px;height:5px;border-radius:50%;
+    background:var(--azure);
+  }
+  .service-row.expanded .service-detail{max-height:260px;opacity:1;margin-top:10px;}
+  .service-row.expanded .expand-icon{transform:rotate(180deg);}
+  @media (hover:hover) and (pointer:fine){
+    .service-row:hover .service-detail,
+    .service-row:focus-visible .service-detail{
+      max-height:260px;opacity:1;margin-top:10px;
+    }
+    .service-row:hover .expand-icon,
+    .service-row:focus-visible .expand-icon{transform:rotate(180deg);}
+  }
+
+  .about-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,0.9fr);gap:48px;}
+  .about-copy{min-width:0;}
+  .about-copy p{margin:0 0 15px 0;color:var(--muted);font-size:16px;overflow-wrap:anywhere;}
   .about-subhead{font-size:19px;margin-bottom:16px;}
 
   .about-top{
     display:grid;
-    grid-template-columns: 0.8fr 1.2fr;
+    grid-template-columns: minmax(0,0.8fr) minmax(0,1.2fr);
     gap:44px;
     align-items:center;
     margin-bottom:48px;
   }
-  .about-intro p{margin:0 0 15px 0;color:var(--muted);font-size:16px;}
+  .about-intro{min-width:0;}
+  .about-intro p{margin:0 0 15px 0;color:var(--muted);font-size:16px;overflow-wrap:anywhere;}
   .about-intro p:last-child{margin-bottom:0;}
   .about-portrait{
     position:relative;
@@ -432,18 +522,19 @@
     max-height:100%;
     width:auto;
     object-fit:contain;
-    filter: drop-shadow(0 18px 26px rgba(46,29,16,0.25));
+    filter: drop-shadow(0 18px 26px rgba(var(--shadow-rgb),0.25));
   }
   .credential-card{
     border:1px solid var(--line);border-left:3px solid var(--azure);
-    border-radius:var(--radius);padding:16px 18px;background:var(--pearl);margin-bottom:11px;
-    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    border-radius:var(--radius);padding:16px 18px;background:var(--surface);margin-bottom:11px;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background-color 0.35s ease;
   }
   .credential-card:hover{
     transform: translateY(-4px) scale(1.015);
-    box-shadow: 0 14px 26px -12px rgba(46,29,16,0.28);
+    box-shadow: 0 14px 26px -12px rgba(var(--shadow-rgb),0.28);
     border-color: var(--azure);
   }
+  .about-side{min-width:0;}
   .credential-card h3{font-size:15px;margin-bottom:4px;}
   .credential-card span{font-size:12.5px;color:var(--azure-text);}
 
@@ -455,7 +546,7 @@
 
   .empty-state{
     border:1px dashed var(--line);border-radius:var(--radius);
-    padding:36px 30px;background:var(--pearl);
+    padding:36px 30px;background:var(--surface);
   }
   .empty-state h3{font-size:17px;margin-bottom:7px;}
   .empty-state p{color:var(--muted);font-size:15px;max-width:48ch;}
@@ -464,22 +555,25 @@
   .project-grid{
     margin-top:8px;
     display:grid;
-    grid-template-columns:repeat(2, 1fr);
+    grid-template-columns:repeat(2, minmax(0,1fr));
     gap:22px;
   }
   .project-card{
+    position:relative;
     border:1.5px solid rgba(34,45,82,0.16);
     border-radius:14px;
-    background:var(--pearl);
+    background:var(--surface);
     overflow:hidden;
     display:flex;flex-direction:column;
-    box-shadow:0 2px 10px -4px rgba(34,45,82,0.12);
-    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    min-width:0;
+    box-shadow:0 2px 10px -4px rgba(var(--shadow-rgb),0.12);
+    transition: transform 0.32s cubic-bezier(0.22,1,0.36,1), box-shadow 0.32s ease, border-color 0.32s ease, background-color 0.35s ease, z-index 0s;
   }
   .project-card:hover{
-    transform: translateY(-6px);
-    box-shadow: 0 16px 30px -12px rgba(34,45,82,0.28);
+    transform: translateY(-8px) scale(1.025);
+    box-shadow: 0 22px 38px -14px rgba(var(--shadow-rgb),0.34);
     border-color: var(--azure);
+    z-index:3;
   }
   .project-media{
     position:relative;
@@ -491,9 +585,10 @@
     position:absolute;inset:0;width:100%;height:100%;
     object-fit:cover;object-position:top center;
     opacity:0;
-    transition:opacity 1s ease;
+    transition:opacity 1s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
   }
   .project-media .slide.active{opacity:1;}
+  .project-card:hover .project-media .slide.active{transform:scale(1.06);}
   .project-badge{
     position:absolute;top:12px;left:12px;z-index:2;
     background:rgba(27,35,64,0.72);color:var(--pearl);
@@ -511,9 +606,10 @@
     transition:background 0.25s ease, transform 0.25s ease;
   }
   .project-dots span.active{background:var(--pearl);transform:scale(1.3);}
-  .project-info{padding:19px 21px 22px;}
+  .project-info{padding:19px 21px 22px;position:relative;transition:background 0.3s ease;}
+  .project-card:hover .project-info{background:var(--silk);}
   .project-info h3{font-size:16px;margin-bottom:6px;}
-  .project-info p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.55;}
+  .project-info p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.55;overflow-wrap:anywhere;}
 
   .project-media.video{cursor:pointer;}
   .project-media.video .video-poster{
@@ -541,16 +637,17 @@
     text-transform:uppercase;letter-spacing:0.05em;font-weight:500;
   }
   .project-list-head::after{content:"";flex:1;height:1px;background:var(--line);}
+  .project-list-head.first{margin-top:8px;}
 
   @media (max-width:900px){
-    .project-grid{grid-template-columns:1fr;}
+    .project-grid{grid-template-columns:minmax(0,1fr);}
   }
 
   .resume-card{
     display:flex;align-items:center;gap:16px;
     border:1px solid var(--line);border-left:3px solid var(--navy);
     border-radius:var(--radius);padding:20px 22px;
-    background:var(--pearl);max-width:520px;margin-bottom:16px;
+    background:var(--surface);max-width:520px;margin-bottom:16px;
   }
   .resume-icon{
     width:44px;height:44px;border-radius:10px;flex:none;
@@ -569,7 +666,28 @@
   }
   .resume-btn:hover{background:var(--azure);}
 
-  .contact-card{border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--pearl);max-width:520px;}
+  .contact-card{border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--surface);max-width:520px;transition:background-color 0.35s ease, border-color 0.3s ease;}
+  .lead-form-card{margin-top:18px;}
+  .form-note{margin:6px 0 0;font-size:14px;color:var(--muted);}
+  .lead-form{margin-top:20px;display:flex;flex-direction:column;gap:14px;}
+  .form-row{display:flex;flex-direction:column;gap:6px;}
+  .form-row label{font-size:12.5px;color:var(--azure-text);font-weight:500;}
+  .form-row input, .form-row textarea{
+    font-family:inherit;font-size:14.5px;color:var(--ink);
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:11px 13px;background:var(--paper);
+    transition:border-color 0.2s ease, box-shadow 0.2s ease;
+    resize:vertical;
+    width:100%;
+  }
+  .form-row input:focus, .form-row textarea:focus{
+    outline:none;border-color:var(--azure);box-shadow:0 0 0 3px rgba(62,78,138,0.15);
+  }
+  .form-submit{align-self:flex-start;border:none;}
+  .form-submit:disabled{opacity:0.6;cursor:default;}
+  .form-status{margin:0;font-size:13.5px;min-height:1.4em;}
+  .form-status.is-success{color:#2E7D4F;}
+  .form-status.is-error{color:#B3452C;}
   .contact-list{margin-top:18px;display:flex;flex-direction:column;gap:9px;}
   .contact-list a{
     display:flex;justify-content:space-between;align-items:center;
@@ -640,6 +758,7 @@
     .ledger-row{grid-template-columns:1fr;gap:6px;padding:16px 0;}
     .ledger-index{padding-top:0;}
     .ledger-tag{padding-top:0;}
+    .project-list-head{margin-top:30px;}
 
     .about-top{gap:24px;margin-bottom:32px;}
     .about-portrait{height:230px;}
@@ -652,6 +771,8 @@
     .resume-card{padding:16px;max-width:100%;flex-wrap:wrap;}
     .resume-btn{width:100%;justify-content:center;}
     .contact-list a{flex-direction:column;align-items:flex-start;gap:5px;padding:12px 14px;}
+    .lead-form-card{max-width:100%;}
+    .form-submit{width:100%;justify-content:center;}
   }
 </style>
 </head>
@@ -669,6 +790,9 @@
       <a href="https://www.linkedin.com/in/albemar-sandoy-294a2831b" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="ph-light ph-linkedin-logo"></i></a>
       <a href="https://www.facebook.com/share/1AcSfZgxes/" target="_blank" rel="noopener" aria-label="Facebook"><i class="ph-light ph-facebook-logo"></i></a>
       <a href="mailto:sandoyalbemar19@gmail.com" aria-label="Email"><i class="ph-light ph-envelope-simple"></i></a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+        <i class="ph-light ph-moon" id="themeIcon"></i>
+      </button>
     </div>
 
     <nav class="primary">
@@ -764,6 +888,7 @@
         <p>Work samples from my accounting coursework and virtual assistant experience.</p>
       </div>
 
+      <div class="project-list-head first">Client & customer communication</div>
       <div class="project-grid">
 
         <div class="project-card">
@@ -801,16 +926,10 @@
           </div>
         </div>
 
-        <div class="project-card">
-          <div class="project-media video" data-youtube="WyExi-bjXn0">
-            <img class="video-poster" src="https://img.youtube.com/vi/WyExi-bjXn0/hqdefault.jpg" alt="Intern teaching vlog thumbnail">
-            <span class="play-btn"><i class="ph-fill ph-play"></i></span>
-          </div>
-          <div class="project-info">
-            <h3>Intern Teaching</h3>
-            <p>A short vlog from my time as a Teaching Assistant Intern, planning lessons and running the classroom for first- and second-year accounting students.</p>
-          </div>
-        </div>
+      </div>
+
+      <div class="project-list-head">Scheduling & systems</div>
+      <div class="project-grid">
 
         <div class="project-card">
           <div class="project-media">
@@ -838,20 +957,10 @@
           </div>
         </div>
 
-        <div class="project-card">
-          <div class="project-media" data-slideshow data-interval="3200">
-            <span class="project-badge">2 screens</span>
-            <img class="slide active" src="website-1.jpg" alt="Client website homepage screenshot">
-            <img class="slide" src="website-2.jpg" alt="Client website about page screenshot">
-            <div class="project-dots">
-              <span class="active"></span><span></span>
-            </div>
-          </div>
-          <div class="project-info">
-            <h3>Website Builds</h3>
-            <p>A roofing company site built end-to-end — homepage, about page, and a lead-capture contact form.</p>
-          </div>
-        </div>
+      </div>
+
+      <div class="project-list-head">Documentation & outreach</div>
+      <div class="project-grid">
 
         <div class="project-card">
           <div class="project-media" data-slideshow data-interval="3200">
@@ -889,6 +998,37 @@
 
       </div>
 
+      <div class="project-list-head">Web & media</div>
+      <div class="project-grid">
+
+        <div class="project-card">
+          <div class="project-media" data-slideshow data-interval="3200">
+            <span class="project-badge">2 screens</span>
+            <img class="slide active" src="website-1.jpg" alt="Client website homepage screenshot">
+            <img class="slide" src="website-2.jpg" alt="Client website about page screenshot">
+            <div class="project-dots">
+              <span class="active"></span><span></span>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>Website Builds</h3>
+            <p>A roofing company site built end-to-end — homepage, about page, and a lead-capture contact form.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-media video" data-youtube="WyExi-bjXn0">
+            <img class="video-poster" src="https://img.youtube.com/vi/WyExi-bjXn0/hqdefault.jpg" alt="Intern teaching vlog thumbnail">
+            <span class="play-btn"><i class="ph-fill ph-play"></i></span>
+          </div>
+          <div class="project-info">
+            <h3>Intern Teaching</h3>
+            <p>A short vlog from my time as a Teaching Assistant Intern, planning lessons and running the classroom for first- and second-year accounting students.</p>
+          </div>
+        </div>
+
+      </div>
+
       <div class="project-list-head">More categories — coming soon</div>
       <div class="ledger">
         <div class="ledger-row">
@@ -909,43 +1049,73 @@
         <p>What I can take off your plate — on the accounting side and the operations side.</p>
       </div>
       <div class="ledger">
-        <div class="ledger-row">
+        <div class="ledger-row service-row" tabindex="0" role="button" aria-expanded="false">
           <div class="ledger-index">01</div>
           <div>
-            <div class="ledger-title">Bookkeeping & Financial Documentation</div>
+            <div class="ledger-title">Bookkeeping & Financial Documentation<i class="ph-light ph-caret-down expand-icon"></i></div>
             <div class="ledger-desc">Organizing financial records, preparing spreadsheets and reports, and keeping documentation audit-ready.</div>
+            <ul class="service-detail">
+              <li>Bank and transaction reconciliation</li>
+              <li>Expense tracking and categorization</li>
+              <li>Financial statement preparation (P&L, balance sheet)</li>
+              <li>Audit-ready recordkeeping and filing systems</li>
+            </ul>
           </div>
           <div class="ledger-tag">Accounting</div>
         </div>
-        <div class="ledger-row">
+        <div class="ledger-row service-row" tabindex="0" role="button" aria-expanded="false">
           <div class="ledger-index">02</div>
           <div>
-            <div class="ledger-title">CRM & Business Operations Support</div>
+            <div class="ledger-title">CRM & Business Operations Support<i class="ph-light ph-caret-down expand-icon"></i></div>
             <div class="ledger-desc">Managing client databases and workflows in GoHighLevel, plus internal coordination across Slack and TextGrid.</div>
+            <ul class="service-detail">
+              <li>GoHighLevel pipeline setup and management</li>
+              <li>Workflow automation and lead tagging</li>
+              <li>Cross-team coordination via Slack and TextGrid</li>
+              <li>Data cleanup and reporting</li>
+            </ul>
           </div>
           <div class="ledger-tag">Operations</div>
         </div>
-        <div class="ledger-row">
+        <div class="ledger-row service-row" tabindex="0" role="button" aria-expanded="false">
           <div class="ledger-index">03</div>
           <div>
-            <div class="ledger-title">Client Communication & Scheduling</div>
+            <div class="ledger-title">Client Communication & Scheduling<i class="ph-light ph-caret-down expand-icon"></i></div>
             <div class="ledger-desc">Calendar bookings, appointment scheduling, and day-to-day communication across email, SMS, and chat.</div>
+            <ul class="service-detail">
+              <li>Appointment booking across multiple calendars</li>
+              <li>Client support over email, SMS, and chat</li>
+              <li>Follow-up sequencing and reminders</li>
+              <li>Status updates and clean handoffs</li>
+            </ul>
           </div>
           <div class="ledger-tag">Support</div>
         </div>
-        <div class="ledger-row">
+        <div class="ledger-row service-row" tabindex="0" role="button" aria-expanded="false">
           <div class="ledger-index">04</div>
           <div>
-            <div class="ledger-title">Records Management</div>
+            <div class="ledger-title">Records Management<i class="ph-light ph-caret-down expand-icon"></i></div>
             <div class="ledger-desc">Digitizing and organizing institutional documentation for accuracy and easy retrieval.</div>
+            <ul class="service-detail">
+              <li>Digitizing paper records</li>
+              <li>Filing systems and document taxonomy</li>
+              <li>Version control and fast retrieval</li>
+              <li>Compliance-ready archiving</li>
+            </ul>
           </div>
           <div class="ledger-tag">Admin</div>
         </div>
-        <div class="ledger-row">
+        <div class="ledger-row service-row" tabindex="0" role="button" aria-expanded="false">
           <div class="ledger-index">05</div>
           <div>
-            <div class="ledger-title">Lead Generation & Outreach</div>
+            <div class="ledger-title">Lead Generation & Outreach<i class="ph-light ph-caret-down expand-icon"></i></div>
             <div class="ledger-desc">Prospect research, B2B outreach, and SMS/email marketing campaigns to support sales pipelines.</div>
+            <ul class="service-detail">
+              <li>Prospect research and list building</li>
+              <li>B2B outreach sequences</li>
+              <li>SMS and email marketing campaigns</li>
+              <li>Handoff of qualified leads to sales</li>
+            </ul>
           </div>
           <div class="ledger-tag">Marketing</div>
         </div>
@@ -1031,6 +1201,27 @@
           <a href="https://www.linkedin.com/in/albemar-sandoy-294a2831b" target="_blank" rel="noopener"><span>albemar-sandoy</span><span class="label">LinkedIn</span></a>
           <a href="https://www.facebook.com/share/1AcSfZgxes/" target="_blank" rel="noopener"><span>Albemar Sandoy</span><span class="label">Facebook</span></a>
         </div>
+      </div>
+
+      <div class="contact-card lead-form-card">
+        <h3 style="font-size:17px;">Send a message directly</h3>
+        <p class="form-note">Fill this in and it comes straight to my inbox — no need to open your own email app.</p>
+        <form id="leadForm" class="lead-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" data-endpoint="https://formspree.io/f/YOUR_FORM_ID">
+          <div class="form-row">
+            <label for="lf-name">Name</label>
+            <input type="text" id="lf-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="form-row">
+            <label for="lf-email">Email</label>
+            <input type="email" id="lf-email" name="email" autocomplete="email" required>
+          </div>
+          <div class="form-row">
+            <label for="lf-message">Message</label>
+            <textarea id="lf-message" name="message" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-solid form-submit">Send message <i class="ph ph-paper-plane-tilt"></i></button>
+          <p class="form-status" id="lf-status" role="status" aria-live="polite"></p>
+        </form>
       </div>
     </section>
 
@@ -1148,6 +1339,85 @@
 
   initProjectSlideshows();
   initProjectVideos();
+
+  /* ---- dark mode toggle ---- */
+  (function(){
+    const root = document.documentElement;
+    const toggleBtn = document.getElementById('themeToggle');
+    const icon = document.getElementById('themeIcon');
+    function syncIcon(){
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      if(icon) icon.className = isDark ? 'ph-light ph-sun' : 'ph-light ph-moon';
+      if(toggleBtn) toggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+    }
+    syncIcon();
+    if(toggleBtn){
+      toggleBtn.addEventListener('click', () => {
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try{ localStorage.setItem('theme', next); }catch(e){}
+        syncIcon();
+      });
+    }
+  })();
+
+  /* ---- services: click/tap to expand (in addition to hover on desktop) ---- */
+  document.querySelectorAll('.service-row').forEach(row => {
+    function toggle(){
+      const isOpen = row.classList.toggle('expanded');
+      row.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+    row.addEventListener('click', toggle);
+    row.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        toggle();
+      }
+    });
+  });
+
+  /* ---- contact: send the lead form without leaving the page ---- */
+  const leadForm = document.getElementById('leadForm');
+  if(leadForm){
+    leadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = document.getElementById('lf-status');
+      const btn = leadForm.querySelector('.form-submit');
+      const endpoint = leadForm.dataset.endpoint;
+      status.classList.remove('is-success','is-error');
+
+      if(!endpoint || endpoint.includes('YOUR_FORM_ID')){
+        status.textContent = "This form isn't connected yet — please email sandoyalbemar19@gmail.com directly for now.";
+        status.classList.add('is-error');
+        return;
+      }
+
+      const originalLabel = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = 'Sending…';
+
+      try{
+        const res = await fetch(endpoint, {
+          method:'POST',
+          headers:{'Accept':'application/json'},
+          body:new FormData(leadForm)
+        });
+        if(res.ok){
+          status.textContent = "Thanks — your message is on its way. I'll get back to you soon.";
+          status.classList.add('is-success');
+          leadForm.reset();
+        } else {
+          throw new Error('Request failed');
+        }
+      } catch(err){
+        status.textContent = "Something went wrong sending that — please email sandoyalbemar19@gmail.com directly.";
+        status.classList.add('is-error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalLabel;
+      }
+    });
+  }
 
   setupReveal();
   revealWithinPage(document.querySelector('.page.active'));
