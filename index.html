@@ -106,21 +106,30 @@
     position:sticky;
     top:0;
     height:100vh;
+    overflow-y:auto;
     display:flex;
     flex-direction:column;
   }
-  .profile-header{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
+  /* ---- boxed nav card: photo / name / menu, each its own bordered section ---- */
+  .nav-card{
+    width:100%;
+    flex-shrink:0;
+    border:2px solid var(--ink);
+    border-radius:16px;
+    overflow:hidden;
     background:var(--surface);
+    box-shadow:0 10px 24px -16px rgba(var(--shadow-rgb),0.35);
+    margin-bottom:24px;
+  }
+  .nav-card-photo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
     background-image:
       linear-gradient(180deg, rgba(110,147,250,0.30) 0%, rgba(110,147,250,0.08) 55%, rgba(110,147,250,0) 100%),
       linear-gradient(180deg, rgba(var(--shadow-rgb),0.14) 0%, rgba(var(--shadow-rgb),0.03) 55%, rgba(var(--shadow-rgb),0) 100%);
-    border-bottom:1px solid var(--line);
-    margin:-36px -26px 0;
-    padding:40px 26px 26px;
+    border-bottom:2px solid var(--ink);
+    padding:34px 20px 26px;
   }
   .ring{
     width:14px;height:14px;
@@ -129,35 +138,38 @@
     margin-bottom:16px;
   }
   .avatar{
-    width:72px;height:72px;
-    border-radius:50%;
-    background:var(--azure);
+    width:100%;
+    max-width:220px;
+    background:transparent;
     color:var(--pearl);
     display:flex;align-items:center;justify-content:center;
     font-family:'Poppins',sans-serif;
     font-size:20px;
     font-weight:500;
-    margin-bottom:16px;
     overflow:hidden;
-    border:2px solid var(--surface);
-    box-shadow:0 0 0 1px var(--line);
   }
   .avatar img{
-    width:100%;height:100%;
-    object-fit:cover;
-    object-position: center 15%;
+    width:100%;
+    height:auto;
+    object-fit:contain;
     display:block;
   }
-  .name{font-size:20.5px;line-height:1.3;margin-bottom:4px;color:var(--ink);}
-  .role{
-    font-size:13.5px;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:0.05em;
+  .nav-card-name{
+    width:100%;
+    text-align:center;
+    border-bottom:2px solid var(--ink);
+    padding:16px 18px;
+    background:var(--surface);
   }
-  .role-rule{width:100%;height:1px;background:var(--line);margin:22px 0 22px 0;}
+  .name{font-size:16px;line-height:1.3;margin-bottom:4px;color:var(--ink);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;}
+  .role{
+    font-size:12px;
+    color:var(--muted);
+    letter-spacing:0.02em;
+  }
+  .nav-card-menu{padding:14px 12px;background:var(--surface);}
 
-  .social{display:flex;gap:8px;margin-bottom:30px;}
+  .social{display:flex;gap:8px;margin-bottom:30px;flex-shrink:0;}
   .social a{
     width:32px;height:32px;
     border:1px solid var(--line);
@@ -180,45 +192,42 @@
   }
   .theme-toggle:hover{background:var(--silk);border-color:var(--azure);}
 
-  nav.primary ul{display:flex;flex-direction:column;gap:4px;}
+  nav.primary ul{display:flex;flex-direction:column;gap:9px;}
   nav.primary button{
     all:unset;
+    box-sizing:border-box;
     display:flex;
     align-items:center;
-    gap:13px;
-    padding:9px 12px 9px 9px;
-    border-radius:10px;
-    font-size:15px;
+    gap:12px;
+    padding:11px 16px;
+    border-radius:9px;
+    border:1.5px solid var(--line);
+    background:var(--paper);
+    font-size:14.5px;
     color:var(--muted);
     width:100%;
     position:relative;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
   nav.primary .ico{
-    width:30px;height:30px;flex:none;
+    width:20px;flex:none;
     display:flex;align-items:center;justify-content:center;
     color:var(--azure);
     font-size:16px;
-    border:1px solid var(--line);
-    border-radius:8px;
-    background:var(--surface);
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    transition: color 0.2s ease;
   }
   nav.primary button span:last-child{letter-spacing:0.01em;}
-  nav.primary button:hover{color:var(--ink);}
-  nav.primary button:hover .ico{border-color:var(--azure);transform:translateY(-1px);}
+  nav.primary button:hover{color:var(--ink);border-color:var(--azure);}
   nav.primary button.active{
     background:var(--navy);
+    border-color:var(--navy);
     color:var(--pearl);
     font-weight:500;
     box-shadow:0 6px 16px -6px rgba(34,45,82,0.45);
   }
   nav.primary button.active .ico{
-    background:var(--azure);
-    border-color:var(--azure);
     color:var(--pearl);
   }
-  nav.primary button.active:hover .ico{transform:none;}
 
   .sidebar-footer{
     margin-top:auto;
@@ -229,6 +238,7 @@
     gap:10px;
     font-size:12px;
     color:var(--azure-text);
+    flex-shrink:0;
   }
   .a11y-dot{
     width:26px;height:26px;border-radius:50%;
@@ -740,7 +750,6 @@
   @media (max-width: 900px){
     .shell{grid-template-columns:1fr;}
     .sidebar{position:relative;height:auto;padding:22px 22px;}
-    .profile-header{margin:-22px -22px 0;padding:32px 22px 22px;}
     main{padding:36px 22px;}
     .grid{grid-template-columns:1fr;}
     .card-wide{grid-column:span 1;}
@@ -755,10 +764,8 @@
     body{font-size:15px;}
     main{padding:26px 16px 40px;}
     .sidebar{padding:20px 16px;align-items:center;text-align:center;}
-    .profile-header{margin:-20px -16px 0;padding:28px 16px 20px;}
     .social{justify-content:center;}
-    .role-rule{margin:14px 0 18px 0;}
-    nav.primary ul{justify-content:center;gap:4px;}
+    nav.primary ul{justify-content:center;gap:8px;}
     nav.primary button{font-size:14px;padding:8px 10px;gap:7px;}
     .sidebar-footer{flex-direction:column;text-align:center;gap:6px;}
 
@@ -806,13 +813,24 @@
 <div class="shell">
 
   <aside class="sidebar">
-    <div class="profile-header">
-      <div class="ring"></div>
-      <div class="avatar"><img src="avatar.jpg" alt="Albemar B. Sandoy"></div>
-      <div class="name">Albemar B. Sandoy</div>
-      <div class="role">Accounting · Business Operations & Client Support</div>
+    <div class="nav-card">
+      <div class="nav-card-photo">
+        <div class="avatar"><img src="avatar.jpg" alt="Albemar B. Sandoy"></div>
+      </div>
+      <div class="nav-card-name">
+        <div class="name">Albemar B. Sandoy</div>
+        <div class="role">Accounting · Business Operations & Client Support</div>
+      </div>
+      <nav class="primary nav-card-menu">
+        <ul>
+          <li><button class="active" data-page="home"><span class="ico"><i class="ph-light ph-house"></i></span>Home</button></li>
+          <li><button data-page="projects"><span class="ico"><i class="ph-light ph-folder"></i></span>Projects</button></li>
+          <li><button data-page="services"><span class="ico"><i class="ph-light ph-briefcase"></i></span>Services</button></li>
+          <li><button data-page="about"><span class="ico"><i class="ph-light ph-user"></i></span>About Me</button></li>
+          <li><button data-page="contact"><span class="ico"><i class="ph-light ph-envelope-simple"></i></span>Contact</button></li>
+        </ul>
+      </nav>
     </div>
-    <div class="role-rule"></div>
 
     <div class="social">
       <a href="https://www.linkedin.com/in/albemar-sandoy-294a2831b" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="ph-light ph-linkedin-logo"></i></a>
@@ -822,16 +840,6 @@
         <i class="ph-light ph-moon" id="themeIcon"></i>
       </button>
     </div>
-
-    <nav class="primary">
-      <ul>
-        <li><button class="active" data-page="home"><span class="ico"><i class="ph-light ph-house"></i></span>Home</button></li>
-        <li><button data-page="projects"><span class="ico"><i class="ph-light ph-folder"></i></span>Projects</button></li>
-        <li><button data-page="services"><span class="ico"><i class="ph-light ph-briefcase"></i></span>Services</button></li>
-        <li><button data-page="about"><span class="ico"><i class="ph-light ph-user"></i></span>About Me</button></li>
-        <li><button data-page="contact"><span class="ico"><i class="ph-light ph-envelope-simple"></i></span>Contact</button></li>
-      </ul>
-    </nav>
 
     <div class="sidebar-footer">
       <div class="a11y-dot"><i class="ph-light ph-wheelchair"></i></div>
